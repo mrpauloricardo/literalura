@@ -1,35 +1,50 @@
 package br.com.alura.literalura.view;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import java.io.IOException;
 import java.util.Scanner;
 
+@Component
 public class Menu {
     private final Scanner scanner;
+    private final BuscaLivro buscaLivro;
+    private final BuscaAutor buscaAutor;
 
-    public Menu(Scanner scanner) {
+    @Autowired
+    public Menu(Scanner scanner, BuscaLivro buscaLivro, BuscaAutor buscaAutor) {
         this.scanner = scanner;
+        this.buscaLivro = buscaLivro;
+        this.buscaAutor = buscaAutor;
     }
 
     public void exibirMenu() throws IOException {
-        while(true) {
+        while (true) {
             printMenu();
             int opcao = scanner.nextInt();
             scanner.nextLine();
 
             switch (opcao) {
                 case 1:
-                    SubMenuLivro subMenuLivro = new SubMenuLivro(scanner);
-                    subMenuLivro.selecionarTipoBuscaLivro();
+                    buscaLivro.buscaPorTitulo(scanner);
+                    break;
                 case 2:
-                    SubMenuAutor subMenuAutor = new SubMenuAutor(scanner);
-                    subMenuAutor.selecionarTipoBuscaAutor();
+                    buscaLivro.buscaPorIdioma(scanner);
+                    break;
                 case 3:
-                    System.out.println("em andamento3");
+                    buscaLivro.buscaTodos();
                     break;
                 case 4:
-                    System.out.println("em andamento4");
+                    buscaAutor.buscaTodosAutores();
                     break;
                 case 5:
+                    buscaAutor.buscaAutoresVivosEmAno(scanner);
+                    break;
+                case 6:
+                    buscaLivro.buscaMaisBaixados();
+                    break;
+                case 7:
                     System.out.println("Saindo do programa...");
                     scanner.close();
                     System.exit(0);
@@ -41,11 +56,13 @@ public class Menu {
 
     public void printMenu() {
         System.out.println("\n--- Menu Principal ---");
-        System.out.println("1. Buscar Livros");
-        System.out.println("2. Buscar Autores");
-        System.out.println("3. Minha Coleção");
-        System.out.println("4. Estatísticas");
-        System.out.println("5. Sair");
+        System.out.println("1. Buscar Livro por Título");
+        System.out.println("2. Buscar Livros por Idioma");
+        System.out.println("3. Buscar Todos os Livros");
+        System.out.println("4. Buscar Autores");
+        System.out.println("5. Buscar Autores vivos em um determinado ano");
+        System.out.println("6. Top 10 Livros mais baixados");
+        System.out.println("7. Sair");
         System.out.print("Escolha uma opção: ");
     }
 }

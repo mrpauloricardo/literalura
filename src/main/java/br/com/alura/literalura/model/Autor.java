@@ -1,12 +1,21 @@
 package br.com.alura.literalura.model;
 
-import jakarta.persistence.Entity;
+import jakarta.persistence.*;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 public class Autor {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     private String nome;
     private int anoNascimento;
     private int anoFalecimento;
+
+    @ManyToMany(mappedBy = "autores")
+    private Set<Livro> livros = new HashSet<>();
 
     public String getNome() {
         return nome;
@@ -30,6 +39,14 @@ public class Autor {
 
     public void setAnoFalecimento(int anoFalecimento) {
         this.anoFalecimento = anoFalecimento;
+    }
+
+    public Set<Livro> getLivros() {
+        return livros;
+    }
+
+    public void setLivros(Set<Livro> livros) {
+        this.livros = livros;
     }
 
     @Override

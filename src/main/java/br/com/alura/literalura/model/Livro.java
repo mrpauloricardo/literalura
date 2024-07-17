@@ -1,17 +1,24 @@
 package br.com.alura.literalura.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 public class Livro {
     @Id
     private Long id;
     private String titulo;
-    private String autor;
-    private int anoLancamento;
     private String idioma;
     private int quantidadeDownloads;
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "livro_autor",
+            joinColumns = @JoinColumn(name = "livro_id"),
+            inverseJoinColumns = @JoinColumn(name = "autor_id")
+    )
+    private Set<Autor> autores = new HashSet<>();
 
     public Long getId() {
         return id;
@@ -29,20 +36,12 @@ public class Livro {
         this.titulo = titulo;
     }
 
-    public String getAutor() {
-        return autor;
+    public Set<Autor> getAutores() {
+        return autores;
     }
 
-    public void setAutor(String autor) {
-        this.autor = autor;
-    }
-
-    public int getAnoLancamento() {
-        return anoLancamento;
-    }
-
-    public void setAnoLancamento(int anoLancamento) {
-        this.anoLancamento = anoLancamento;
+    public void setAutores(Set<Autor> autores) {
+        this.autores = autores;
     }
 
     public String getIdioma() {
@@ -66,8 +65,7 @@ public class Livro {
         return "Livro{" +
                 "id=" + id +
                 ", titulo='" + titulo + '\'' +
-                ", autor='" + autor + '\'' +
-                ", anoLancamento=" + anoLancamento +
+                ", autor='" + autores + '\'' +
                 ", idioma='" + idioma + '\'' +
                 ", quantidadeDownloads=" + quantidadeDownloads +
                 '}';

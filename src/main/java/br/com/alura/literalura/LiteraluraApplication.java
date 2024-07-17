@@ -1,14 +1,23 @@
 package br.com.alura.literalura;
 
 import br.com.alura.literalura.view.Menu;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-import java.io.IOException;
-import java.util.Scanner;
+@SpringBootApplication
+public class LiteraluraApplication implements CommandLineRunner {
 
-public class LiteraluraApplication {
-    public static void main(String[] args) throws IOException {
-        Scanner scanner = new Scanner(System.in);
-        Menu menu = new Menu(scanner);
+    @Autowired
+    private Menu menu;
+
+    public static void main(String[] args) {
+        SpringApplication.run(LiteraluraApplication.class, args);
+    }
+
+    @Override
+    public void run(String... args) throws Exception {
         menu.exibirMenu();
     }
 }
